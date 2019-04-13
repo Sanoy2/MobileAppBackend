@@ -20,32 +20,29 @@ namespace MobileBackend.Services
             this.mapper = mapper;
         }
 
-        public IEnumerable<UserDto> GetAllUsers()
+        public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
         {
-            return userRepository
-                .GetAllAsync()
-                .Result
-                .Select(n => mapper.Map<User, UserDto>(n))
-                .ToList();
+            var allUsers = await userRepository.GetAllAsync();
+            return allUsers.Select(n => mapper.Map<User, UserDto>(n)).ToList();
         }
 
-        public UserDto GetUser(string username)
+        public async Task<UserDto> GetUserAsync(string username)
         {
-            var user = userRepository.GetUserAsync(username.Trim().ToLower()).Result;
+            var user = await userRepository.GetUserAsync(username.Trim().ToLower());
 
             return mapper.Map<User, UserDto>(user);
         }
 
-        public void Register(string username, string password)
+        public async Task RegisterAsync(string username, string password)
         {
-            var user = userRepository.GetUserAsync(username).Result;
+            var user = await userRepository.GetUserAsync(username);
             if(user != null)
             {
                 throw new Exception($"User {username} already exists");
             }
 
             user = new User(username, password);
-            userRepository.AddAsync(user);
+            await userRepository.AddAsync(user);
         }
     }
 }
