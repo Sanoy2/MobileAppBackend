@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MobileBackend.Commands;
 using MobileBackend.Commands.Users;
 using MobileBackend.Services;
 using System;
@@ -13,10 +14,14 @@ namespace MobileBackend.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService userService;
+        private readonly ICommandDispatcher commandDispatcher;
 
-        public UsersController(IUserService userService)
+        public UsersController(
+            IUserService userService, 
+            ICommandDispatcher commandDispatcher)
         {
             this.userService = userService;
+            this.commandDispatcher = commandDispatcher;
         }
         
         [HttpGet]
@@ -40,11 +45,11 @@ namespace MobileBackend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody]CreateUser newUser)
+        public async Task<IActionResult> Register([FromBody]CreateUser command)
         {
-            await userService.RegisterAsync(newUser.Email, newUser.Username, newUser.Password);
+            await commandDispatcher.DispatchAsync(command);
 
-            return Created($"api/users/{newUser.Email}", new object());
+            return Created($"api/users/{command.Email}", new object());
         }
     }
 }

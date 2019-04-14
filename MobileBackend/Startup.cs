@@ -15,6 +15,7 @@ using MobileBackend.Repositories;
 using MobileBackend.Services;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using MobileBackend.Ioc.Modules;
 
 namespace MobileBackend
 {
@@ -37,6 +38,7 @@ namespace MobileBackend
 
             var builder = new ContainerBuilder();
             builder.Populate(services);
+            builder.RegisterModule<CommandModule>();
             ApplicationContainer = builder.Build();
 
             return new AutofacServiceProvider(ApplicationContainer);
