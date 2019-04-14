@@ -11,12 +11,12 @@ namespace MobileBackend.Repositories
     {
         private static ISet<User> users = new HashSet<User>()
         {
-            new User("sanoy@email.com", "pass"),
-            new User("master@email.com", "pass"),
-            new User("jody3@email.com", "pass"),
-            new User("gengu@email.com", "pass"),
-            new User("hopyhops@email.com", "pass"),
-            new User("johny_b@email.com", "pass")
+            new User("sanoy@email.com", "sanoy", "pass"),
+            new User("master@email.com", "mAsTeR", "pass"),
+            new User("jody3@email.com", "jodoeo", "pass"),
+            new User("gengu@email.com", "kingoscope", "pass"),
+            new User("hopyhops@email.com", "ChefOfTheYear", "pass"),
+            new User("johny_b@email.com", "tomatoSoupWinner", "pass")
         };
 
         public async Task AddAsync(User newUser)
@@ -37,6 +37,16 @@ namespace MobileBackend.Repositories
         public async Task<User> GetUserAsync(string email)
         {
             return await Task.FromResult(users.SingleOrDefault(n => n.Email.Equals(email.Trim().ToLower())));
+        }
+
+        public async Task<IEnumerable<User>> GetUsersAsync(string username)
+        {
+            //return await Task.FromResult(users.SingleOrDefault(n => n.Email.Equals(email.Trim().ToLower())));
+            var result = users
+                .Where(n => n.Username.Trim().ToLower()
+                .Contains(username.Trim().ToLower()))
+                .ToList();
+            return await Task.FromResult(result);
         }
 
         public async Task RemoveAsync(int userId)

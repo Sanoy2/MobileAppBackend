@@ -12,6 +12,7 @@ namespace MobileBackend.Repositories
         Task<User> GetUserAsync(int userId);
 
         Task<User> GetUserAsync(string email);
+        Task<IEnumerable<User>> GetUsersAsync(string username);
 
         Task AddAsync(User newUser);
 

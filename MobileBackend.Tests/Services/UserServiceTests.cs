@@ -22,7 +22,7 @@ namespace MobileBackend.Tests.Services
             var mapper = new Mock<IMapper>();
 
             var userService = new UserService(userRepoMock.Object, mapper.Object);
-            await userService.RegisterAsync("user1@email.com", "secret");
+            await userService.RegisterAsync("user1@email.com", "userroZorro","secret");
 
             userRepoMock.Verify(n => n.AddAsync(It.IsAny<User>()), Times.Once);
 

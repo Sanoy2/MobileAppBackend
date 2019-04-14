@@ -56,10 +56,12 @@ namespace MobileBackend.Tests.ETE.Controllers
         public async Task new_user_with_uniqe_email_should_be_register()
         {
             var email = "unique_username@email.com";
+            var username = "usernameRocks";
             var password = "secret";
             CreateUser newUser = new CreateUser()
             {
                 Email = email,
+                Username = username,
                 Password = password
             };
 

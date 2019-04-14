@@ -42,7 +42,7 @@ namespace MobileBackend.Controllers
         [HttpPost]
         public async Task<IActionResult> Register([FromBody]CreateUser newUser)
         {
-            await userService.RegisterAsync(newUser.Email, newUser.Password);
+            await userService.RegisterAsync(newUser.Email, newUser.Username, newUser.Password);
 
             return Created($"api/users/{newUser.Email}", new object());
         }
