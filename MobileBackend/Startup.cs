@@ -13,29 +13,40 @@ using Microsoft.Extensions.Options;
 using MobileBackend.Mappers;
 using MobileBackend.Repositories;
 using MobileBackend.Services;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 
 namespace MobileBackend
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; set; }
+        public IContainer ApplicationContainer { get; private set; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepositoryInMemory>();
             services.AddScoped<IUserService, UserService>();
             services.AddSingleton(AutoMapperConfig.Configure());
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            var builder = new ContainerBuilder();
+            builder.Populate(services);
+            ApplicationContainer = builder.Build();
+
+            return new AutofacServiceProvider(ApplicationContainer);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(
+            IApplicationBuilder app, 
+            IHostingEnvironment env, 
+            IApplicationLifetime appLifetime)
         {
             if (env.IsDevelopment())
             {
@@ -43,6 +54,7 @@ namespace MobileBackend
             }
 
             app.UseMvc();
+            appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
         }
     }
 }
