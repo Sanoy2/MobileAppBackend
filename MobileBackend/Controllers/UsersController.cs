@@ -10,18 +10,16 @@ using System.Threading.Tasks;
 
 namespace MobileBackend.Controllers
 {
-    [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    public class UsersController : ApiControllerBase
     {
         private readonly IUserService userService;
-        private readonly ICommandDispatcher commandDispatcher;
 
         public UsersController(
             IUserService userService, 
             ICommandDispatcher commandDispatcher)
+            : base(commandDispatcher)
         {
             this.userService = userService;
-            this.commandDispatcher = commandDispatcher;
         }
         
         [HttpGet]
@@ -46,7 +44,7 @@ namespace MobileBackend.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Register([FromBody]CreateUser command)
-        {
+        { 
             await commandDispatcher.DispatchAsync(command);
 
             return Created($"api/users/{command.Email}", new object());
