@@ -11,12 +11,12 @@ namespace MobileBackend.Repositories
     {
         private static ISet<User> users = new HashSet<User>()
         {
-            new User("sanoy", "pass"),
-            new User("master", "pass"),
-            new User("jody3", "pass"),
-            new User("gengu", "pass"),
-            new User("hopyhops", "pass"),
-            new User("johny_b", "pass")
+            new User("sanoy@email.com", "pass"),
+            new User("master@email.com", "pass"),
+            new User("jody3@email.com", "pass"),
+            new User("gengu@email.com", "pass"),
+            new User("hopyhops@email.com", "pass"),
+            new User("johny_b@email.com", "pass")
         };
 
         public async Task AddAsync(User newUser)
@@ -34,9 +34,9 @@ namespace MobileBackend.Repositories
             return await Task.FromResult(users.SingleOrDefault(n => n.Id == userId));
         }
 
-        public async Task<User> GetUserAsync(string username)
+        public async Task<User> GetUserAsync(string email)
         {
-            return await Task.FromResult(users.SingleOrDefault(n => n.Username.Equals(username.Trim().ToLower())));
+            return await Task.FromResult(users.SingleOrDefault(n => n.Email.Equals(email.Trim().ToLower())));
         }
 
         public async Task RemoveAsync(int userId)
@@ -47,7 +47,7 @@ namespace MobileBackend.Repositories
 
         public async Task UpdateAsync(User user)
         {
-            
+            await Task.CompletedTask;
         }
     }
 }

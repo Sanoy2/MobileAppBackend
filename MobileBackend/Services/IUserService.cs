@@ -8,8 +8,8 @@ namespace MobileBackend.Services
 {
     public interface IUserService
     {
-        Task<UserDto> GetUserAsync(string username);
+        Task<UserDto> GetUserAsync(string email);
         Task<IEnumerable<UserDto>> GetAllUsersAsync();
-        Task RegisterAsync(string username, string password);
+        Task RegisterAsync(string email, string password);
     }
 }

@@ -26,18 +26,25 @@ namespace MobileBackend.Controllers
             return Ok(users);
         }
 
-        [HttpGet("{username}")]
-        public async Task<IActionResult> GetUser(string username)
-        {
-            var user = await userService.GetUserAsync(username);
+        [HttpGet("{email}")]
+        public async Task<IActionResult> GetUser(string email)
+        {            
+            var user = await userService.GetUserAsync(email);
+
+            if(user == null)
+            {
+                return NotFound("User not found");
+            }
+
             return Ok(user);
         }
 
         [HttpPost]
         public async Task<IActionResult> Register([FromBody]CreateUser newUser)
         {
-            await userService.RegisterAsync(newUser.Username, newUser.Password);
-            return Ok(StatusCodes.Status201Created);
+            await userService.RegisterAsync(newUser.Email, newUser.Password);
+
+            return Created($"api/users/{newUser.Email}", new object());
         }
     }
 }

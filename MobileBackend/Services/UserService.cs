@@ -26,22 +26,22 @@ namespace MobileBackend.Services
             return allUsers.Select(n => mapper.Map<User, UserDto>(n)).ToList();
         }
 
-        public async Task<UserDto> GetUserAsync(string username)
+        public async Task<UserDto> GetUserAsync(string email)
         {
-            var user = await userRepository.GetUserAsync(username.Trim().ToLower());
+            var user = await userRepository.GetUserAsync(email.Trim().ToLower());
 
             return mapper.Map<User, UserDto>(user);
         }
 
-        public async Task RegisterAsync(string username, string password)
+        public async Task RegisterAsync(string email, string password)
         {
-            var user = await userRepository.GetUserAsync(username);
+            var user = await userRepository.GetUserAsync(email);
             if(user != null)
             {
-                throw new Exception($"User {username} already exists");
+                throw new Exception($"User {email} already exists");
             }
 
-            user = new User(username, password);
+            user = new User(email, password);
             await userRepository.AddAsync(user);
         }
     }
