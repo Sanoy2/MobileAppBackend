@@ -10,13 +10,16 @@ namespace MobileBackend.Handlers.Recipes
 {
     public class CreateRecipeHandler: ICommandHandler<CreateRecipe>
     {
-        public CreateRecipeHandler()
+        private readonly IRecipeService recipeService;
+
+        public CreateRecipeHandler(IRecipeService recipeService)
         {
-            
+            this.recipeService = recipeService;
         }
         public async Task HandleAsync(CreateRecipe command)
         {
-            await Task.CompletedTask;
+            await recipeService.AddAsync(command.AuthorId, command.Name, command.ShortDescription, 
+                                         command.Description, command.NeededTimeMinutes);
         }
     }
 }
