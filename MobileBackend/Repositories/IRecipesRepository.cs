@@ -8,10 +8,10 @@ namespace MobileBackend.Repositories
 {
     public interface IRecipesRepository : IRepository
     {
-        IEnumerable<Recipe> GetAll();
-        IEnumerable<Recipe> GetUsersRecipes(int userId);
-        void Add(Recipe recipe);
-        void Update(Recipe recipe);
-        void Remove(int recipeId);
+        Task<IEnumerable<Recipe>> GetAllAsync();
+        Task<IEnumerable<Recipe>> GetUsersRecipesAsync(int userId);
+        Task AddAsync(Recipe recipe);
+        Task UpdateAsync(Recipe recipe);
+        Task RemoveAsync(int recipeId);
     }
 }
