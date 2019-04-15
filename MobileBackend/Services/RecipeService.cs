@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using MobileBackend.DTO;
@@ -30,14 +31,16 @@ namespace MobileBackend.Services
             return mapper.Map<Recipe, RecipeDto>(recipe);
         }
 
-        public Task<IEnumerable<RecipeDto>> GetRecipesAsync()
+        public async Task<IEnumerable<RecipeDto>> GetRecipesAsync()
         {
-            throw new System.NotImplementedException();
+            var recipes = await recipeRepository.GetAllAsync();
+            return recipes.Select(n => mapper.Map<Recipe, RecipeDto>(n)).ToList();
         }
 
-        public Task<IEnumerable<RecipeDto>> GetRecipesAsync(int authorId)
+        public async Task<IEnumerable<RecipeDto>> GetRecipesAsync(int authorId)
         {
-            throw new System.NotImplementedException();
+            var recipes = await recipeRepository.GetUsersRecipesAsync(authorId);
+            return recipes.Select(n => mapper.Map<Recipe, RecipeDto>(n)).ToList();
         }
     }
 }
