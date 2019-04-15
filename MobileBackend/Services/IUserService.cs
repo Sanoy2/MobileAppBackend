@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MobileBackend.Services
 {
-    public interface IUserService
+    public interface IUserService : IService
     {
         Task<UserDto> GetUserAsync(string email);
         Task<IEnumerable<UserDto>> GetUsersAsync(string username);

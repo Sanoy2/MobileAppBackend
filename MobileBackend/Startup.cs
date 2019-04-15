@@ -16,6 +16,7 @@ using MobileBackend.Services;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using MobileBackend.Ioc.Modules;
+using MobileBackend.Ioc;
 
 namespace MobileBackend
 {
@@ -31,14 +32,11 @@ namespace MobileBackend
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IUserRepository, UserRepositoryInMemory>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddSingleton(AutoMapperConfig.Configure());
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             var builder = new ContainerBuilder();
             builder.Populate(services);
-            builder.RegisterModule<CommandModule>();
+            builder.RegisterModule(new ContainerModule(Configuration));
             ApplicationContainer = builder.Build();
 
             return new AutofacServiceProvider(ApplicationContainer);

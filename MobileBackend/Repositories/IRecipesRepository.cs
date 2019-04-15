@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MobileBackend.Repositories
 {
-    public interface IRecipesRepository
+    public interface IRecipesRepository : IRepository
     {
         IEnumerable<Recipe> GetAll();
         IEnumerable<Recipe> GetUsersRecipes(int userId);

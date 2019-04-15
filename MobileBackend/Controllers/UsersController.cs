@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MobileBackend.Commands;
 using MobileBackend.Commands.Users;
 using MobileBackend.Services;
+using MobileBackend.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,19 +14,24 @@ namespace MobileBackend.Controllers
     public class UsersController : ApiControllerBase
     {
         private readonly IUserService userService;
+        private readonly GeneralSettings settings;
 
         public UsersController(
             IUserService userService, 
-            ICommandDispatcher commandDispatcher)
+            ICommandDispatcher commandDispatcher,
+            GeneralSettings settings)   
             : base(commandDispatcher)
         {
             this.userService = userService;
+            this.settings = settings;
         }
         
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await userService.GetAllUsersAsync();
+            var something = settings.Name;
+            return Ok(something);
             return Ok(users);
         }
 
