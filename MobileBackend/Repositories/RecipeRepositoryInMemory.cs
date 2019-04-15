@@ -39,7 +39,7 @@ namespace MobileBackend.Repositories
             return await Task.FromResult(recipes.Where(n => n.AuthorId == userId).ToList());
         }
 
-        public async Task<Recipe> GetRecipe(int recipeId)
+        public async Task<Recipe> GetRecipeAsync(int recipeId)
         {
             return await Task.Run(() => 
             {
