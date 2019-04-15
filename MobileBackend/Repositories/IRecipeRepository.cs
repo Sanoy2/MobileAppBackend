@@ -10,6 +10,7 @@ namespace MobileBackend.Repositories
     {
         Task<IEnumerable<Recipe>> GetAllAsync();
         Task<IEnumerable<Recipe>> GetUsersRecipesAsync(int userId);
+        Task<Recipe> GetRecipe(int recipeId);
         Task AddAsync(Recipe recipe);
         Task UpdateAsync(Recipe recipe);
         Task RemoveAsync(int recipeId);

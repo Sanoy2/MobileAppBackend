@@ -22,5 +22,12 @@ namespace MobileBackend.Models.Domain
             Password = password;
             DateOfJoin = DateTime.UtcNow;
         }
+
+        // Method for in memory repository
+        public User(int id, string email, string username, string password)
+        : this(email, username, password)
+        {
+            Id = id;
+        }
     }
 }

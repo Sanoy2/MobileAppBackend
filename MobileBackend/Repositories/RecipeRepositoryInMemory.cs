@@ -8,35 +8,58 @@ namespace MobileBackend.Repositories
 {
     public class RecipeRepositoryInMemory : IRecipeRepository
     {
-        private static ISet<Recipe> recipes = new HashSet<Recipe>();
-
-        public RecipeRepositoryInMemory()
+        private static ISet<Recipe> recipes = new HashSet<Recipe>()
         {
+            new Recipe(1, "Meatballs", "Short description", "Full description", 20),
+            new Recipe(2, "Fries", "Short description", "Full description", 40),
+            new Recipe(3, "Chicken wings", "Short description", "Full description", 30),
+            new Recipe(3, "Hamburger", "Short description", "Full description", 25),
+            new Recipe(1, "Chicken", "Short description", "Full description", 15),
+            new Recipe(4, "Frying chicken", "Short description", "Full description", 90),
+            new Recipe(5, "Tomato soup", "Short description", "Full description", 17),
+            new Recipe(2, "Tomato soup", "Short description", "Full description", 45),
+            new Recipe(2, "Pizza", "Short description", "Full description", 76),
+            new Recipe(3, "Neapolitan Pizza", "Short description", "Full description", 44),
+            new Recipe(4, "American pizza", "Short description", "Full description", 67),
+
+        };
+
+        public async Task AddAsync(Recipe recipe)
+        {
+            await Task.FromResult(recipes.Add(recipe));
         }
 
-        public Task AddAsync(Recipe recipe)
+        public async Task<IEnumerable<Recipe>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await Task.FromResult(recipes.ToList());
         }
 
-        public Task<IEnumerable<Recipe>> GetAllAsync()
+        public async Task<IEnumerable<Recipe>> GetUsersRecipesAsync(int userId)
         {
-            throw new NotImplementedException();
+            return await Task.FromResult(recipes.Where(n => n.AuthorId == userId).ToList());
         }
 
-        public Task<IEnumerable<Recipe>> GetUsersRecipesAsync(int userId)
+        public async Task<Recipe> GetRecipe(int recipeId)
         {
-            throw new NotImplementedException();
+            return await Task.Run(() => 
+            {
+                return recipes.SingleOrDefault(n => n.Id == recipeId);
+            });
         }
 
-        public Task RemoveAsync(int recipeId)
+        public async Task RemoveAsync(int recipeId)
         {
-            throw new NotImplementedException();
+            var recipe = recipes.SingleOrDefault(n => n.Id == recipeId);
+            if(recipe == null)
+            {
+                return;
+            }
+            await Task.FromResult(recipes.Remove(recipe));
         }
 
-        public Task UpdateAsync(Recipe recipe)
+        public async Task UpdateAsync(Recipe recipe)
         {
-            throw new NotImplementedException();
+            await Task.CompletedTask;
         }
     }
 }

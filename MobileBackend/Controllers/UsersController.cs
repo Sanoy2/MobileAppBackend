@@ -30,8 +30,6 @@ namespace MobileBackend.Controllers
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await userService.GetAllUsersAsync();
-            var something = settings.Name;
-            return Ok(something);
             return Ok(users);
         }
 

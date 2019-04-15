@@ -16,7 +16,7 @@ namespace MobileBackend.Handlers.Recipes
         }
         public async Task HandleAsync(CreateRecipe command)
         {
-            
+            await Task.CompletedTask;
         }
     }
 }
