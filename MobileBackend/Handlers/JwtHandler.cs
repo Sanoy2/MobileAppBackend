@@ -9,6 +9,8 @@ using Microsoft.IdentityModel.Tokens;
 using MobileBackend.DTO;
 using MobileBackend.Settings;
 using MobileBackend.Extensions;
+using MobileBackend.Models.Enums;
+
 namespace MobileBackend.Handlers
 {
     public class JwtHandler : IJwtHandler
@@ -20,7 +22,7 @@ namespace MobileBackend.Handlers
             this.jwtSettings = jwtSettings;
         }
 
-        public JwtDto CreateToken(string email, string role)
+        public JwtDto CreateToken(string email, int userId, string role)
         {
             var now = DateTime.UtcNow;
             var days = jwtSettings.ExpirationDays;
@@ -32,8 +34,9 @@ namespace MobileBackend.Handlers
             {
                 new Claim(JwtRegisteredClaimNames.Sub, email),
                 new Claim(ClaimTypes.Role, role),
+                new Claim(nameof(JwtEnums.userId), userId.ToString()),
+                new Claim(nameof(JwtEnums.userEmail), email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                //new Claim(JwtRegisteredClaimNames.Iat, now.ToTimeStamp().ToString(), ClaimValueTypes.Integer64)
                 
                 new Claim(JwtRegisteredClaimNames.Nbf, notBefore),
                 new Claim(JwtRegisteredClaimNames.Exp, expiry)
@@ -43,13 +46,6 @@ namespace MobileBackend.Handlers
             var symmetricSecurityKey = new SymmetricSecurityKey(jwtKey);
             var jwtSecurityAlgorithm = SecurityAlgorithms.HmacSha256;
             var signingCredentials = new SigningCredentials(symmetricSecurityKey, jwtSecurityAlgorithm);
-
-            //var jwt = new JwtSecurityToken(
-            //    issuer: jwtSettings.Issuer,
-            //    claims: claims,
-            //    notBefore: now,
-            //    expires: expires,
-            //    signingCredentials: signCredentials);
 
             var jwt = new JwtSecurityToken(
                 new JwtHeader(signingCredentials),

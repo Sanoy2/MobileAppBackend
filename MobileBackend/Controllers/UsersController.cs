@@ -4,13 +4,17 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MobileBackend.Commands;
 using MobileBackend.Commands.Users;
+using MobileBackend.Extensions;
 using MobileBackend.Handlers;
+using MobileBackend.Models.Enums;
 using MobileBackend.Services;
 using MobileBackend.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MobileBackend.Controllers
@@ -65,7 +69,7 @@ namespace MobileBackend.Controllers
         [Route("token")]
         public IActionResult Token()
         {
-            var token = jwtHandler.CreateToken("me@email.com", "user");
+            var token = jwtHandler.CreateToken("me@email.com", 7491, "user");
 
             return Ok(token);
         }
@@ -75,7 +79,7 @@ namespace MobileBackend.Controllers
         [Route("auth")]
         public IActionResult OnAuth()
         {
-            return Content("Authorized");
+            return Content($"User : {HttpContext.GetJwtPayload(JwtEnums.userEmail)}, Id: {HttpContext.GetJwtPayload(JwtEnums.userId)}");
         }
     }
 }

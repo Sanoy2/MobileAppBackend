@@ -8,6 +8,6 @@ namespace MobileBackend.Handlers
 {
     public interface IJwtHandler
     {
-        JwtDto CreateToken(string email, string role);
+        JwtDto CreateToken(string email, int userId, string role);
     }
 }
