@@ -20,8 +20,9 @@ namespace MobileBackend.Tests.Services
         {
             var userRepoMock = new Mock<IUserRepository>();
             var mapper = new Mock<IMapper>();
+            var encrypter = new Mock<IEncrypter>(); 
 
-            var userService = new UserService(userRepoMock.Object, mapper.Object);
+            var userService = new UserService(userRepoMock.Object, mapper.Object, encrypter.Object);
             await userService.RegisterAsync("user1@email.com", "userroZorro","secret");
 
             userRepoMock.Verify(n => n.AddAsync(It.IsAny<User>()), Times.Once);

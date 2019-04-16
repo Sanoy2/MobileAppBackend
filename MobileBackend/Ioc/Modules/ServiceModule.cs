@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using MobileBackend.Handlers;
 using MobileBackend.Services;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,14 @@ namespace MobileBackend.Ioc.Modules
                 .Where(n => n.IsAssignableTo<IService>())
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
+
+            builder.RegisterType<Encrypter>()
+                .As<IEncrypter>()
+                .SingleInstance();
+
+            builder.RegisterType<JwtHandler>()
+                .As<IJwtHandler>()
+                .SingleInstance();
         }
     }
 }

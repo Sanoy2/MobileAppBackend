@@ -13,11 +13,13 @@ namespace MobileBackend.Services
     {
         private readonly IUserRepository userRepository;
         private readonly IMapper mapper;
+        private readonly IEncrypter encrypter;
 
-        public UserService(IUserRepository userRepository, IMapper mapper)
+        public UserService(IUserRepository userRepository, IMapper mapper, IEncrypter encrypter)
         {
             this.userRepository = userRepository;
             this.mapper = mapper;
+            this.encrypter = encrypter;
         }
 
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
@@ -47,8 +49,32 @@ namespace MobileBackend.Services
                 throw new Exception($"User {email} already exists");
             }
 
-            user = new User(email, username, password);
+            var salt = encrypter.GetSalt(password);
+            var hash = encrypter.GetHash(password, salt);
+            user = new User(email, username, hash, salt);
             await userRepository.AddAsync(user);
+        }
+
+        public async Task LoginAsync(string email, string password)
+        {
+            var user = await userRepository.GetUserAsync(email.Trim().ToLower());
+
+            if(user == null)
+            {
+                throw new ArgumentNullException("Invalid email or password");
+            }
+
+            var salt = encrypter.GetSalt(password);
+            var hash = encrypter.GetHash(password, salt);
+
+            if (password.Equals(hash))
+            {
+                return;
+            }
+            else
+            {
+                throw new Exception("Invalid email or password");
+            }
         }
     }
 }
