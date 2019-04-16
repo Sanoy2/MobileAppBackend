@@ -13,6 +13,6 @@ namespace MobileBackend.Services
         Task<IEnumerable<UserDto>> GetAllUsersAsync();
         Task RegisterAsync(string email, string username, string password);
 
-        Task LoginAsync(string email, string password);
+        Task<JwtDto> LoginAsync(string email, string password);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MobileBackend.DTO;
+using MobileBackend.Handlers;
 using MobileBackend.Models.Domain;
 using MobileBackend.Repositories;
 using System;
@@ -14,12 +15,14 @@ namespace MobileBackend.Services
         private readonly IUserRepository userRepository;
         private readonly IMapper mapper;
         private readonly IEncrypter encrypter;
+        private readonly IJwtHandler jwtHandler;
 
-        public UserService(IUserRepository userRepository, IMapper mapper, IEncrypter encrypter)
+        public UserService(IUserRepository userRepository, IMapper mapper, IEncrypter encrypter, IJwtHandler jwtHandler)
         {
             this.userRepository = userRepository;
             this.mapper = mapper;
             this.encrypter = encrypter;
+            this.jwtHandler = jwtHandler;
         }
 
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
@@ -55,7 +58,7 @@ namespace MobileBackend.Services
             await userRepository.AddAsync(user);
         }
 
-        public async Task LoginAsync(string email, string password)
+        public async Task<JwtDto> LoginAsync(string email, string password)
         {
             var user = await userRepository.GetUserAsync(email.Trim().ToLower());
 
@@ -69,7 +72,7 @@ namespace MobileBackend.Services
 
             if (password.Equals(hash))
             {
-                return;
+                return jwtHandler.CreateToken(user.Email, user.Id, "user");
             }
             else
             {
