@@ -58,11 +58,21 @@ namespace MobileBackend.Controllers
         }
 
         [HttpPost]
+        [Route("register")]
         public async Task<IActionResult> Register([FromBody]CreateUser command)
         { 
             await commandDispatcher.DispatchAsync(command);
 
             return Created($"api/users/{command.Email}", new object());
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Login([FromBody]LoginUser command)
+        {
+            var token = await userService.LoginAsync(command.Email, command.Password);
+
+            return Ok(token);
         }
 
         [HttpGet]
