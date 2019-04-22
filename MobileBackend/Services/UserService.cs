@@ -33,7 +33,8 @@ namespace MobileBackend.Services
 
         public async Task<UserDto> GetUserAsync(string email)
         {
-            var user = await userRepository.GetUserAsync(email.Trim().ToLower());
+            email = email.Trim().ToLower();
+            var user = await userRepository.GetUserAsync(email);
 
             return mapper.Map<User, UserDto>(user);
         }
@@ -46,6 +47,7 @@ namespace MobileBackend.Services
 
         public async Task RegisterAsync(string email, string username, string password)
         {
+            email = email.Trim().ToLower();
             var user = await userRepository.GetUserAsync(email);
             if(user != null)
             {
@@ -60,17 +62,18 @@ namespace MobileBackend.Services
 
         public async Task<JwtDto> LoginAsync(string email, string password)
         {
-            var user = await userRepository.GetUserAsync(email.Trim().ToLower());
+            email = email.Trim().ToLower();
+            var user = await userRepository.GetUserAsync(email);
 
             if(user == null)
             {
                 throw new ArgumentNullException("Invalid email or password");
             }
 
-            var salt = encrypter.GetSalt(password);
+            var salt = user.Salt;
             var hash = encrypter.GetHash(password, salt);
 
-            if (password.Equals(hash))
+            if (user.Password.Equals(hash))
             {
                 return jwtHandler.CreateToken(user.Email, user.Id, "user");
             }

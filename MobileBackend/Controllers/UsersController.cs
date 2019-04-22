@@ -70,6 +70,8 @@ namespace MobileBackend.Controllers
         [Route("login")]
         public async Task<IActionResult> Login([FromBody]LoginUser command)
         {
+            //await commandDispatcher.DispatchAsync(command);
+
             try
             {
                 var token = await userService.LoginAsync(command.Email, command.Password);

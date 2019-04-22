@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MobileBackend.Commands.Users
 {
-    public class LoginUser
+    public class LoginUser : ICommand
     {
         public string Email { get; set; }
         public string Password { get; set; }
