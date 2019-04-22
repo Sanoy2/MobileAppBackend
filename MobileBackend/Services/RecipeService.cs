@@ -42,5 +42,15 @@ namespace MobileBackend.Services
             var recipes = await recipeRepository.GetUsersRecipesAsync(authorId);
             return recipes.Select(n => mapper.Map<Recipe, RecipeDto>(n)).ToList();
         }
+
+        public async Task RemoveAsync(int recipeId)
+        {
+            await recipeRepository.RemoveAsync(recipeId);
+        }
+
+        public Task UpdateAsync(Recipe recipe)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
