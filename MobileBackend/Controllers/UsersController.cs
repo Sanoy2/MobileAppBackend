@@ -70,9 +70,15 @@ namespace MobileBackend.Controllers
         [Route("login")]
         public async Task<IActionResult> Login([FromBody]LoginUser command)
         {
-            var token = await userService.LoginAsync(command.Email, command.Password);
-
-            return Ok(token);
+            try
+            {
+                var token = await userService.LoginAsync(command.Email, command.Password);
+                return Ok(token);
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.Unauthorized, e.Message);
+            }
         }
 
         [HttpGet]
