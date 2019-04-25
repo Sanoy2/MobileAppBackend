@@ -16,7 +16,7 @@ namespace MobileBackend.Commands
         }
         public async Task DispatchAsync<T>(T command) where T : ICommand
         {
-            if(command is null)
+            if(command == null)
             {
                 throw new ArgumentNullException(nameof(command), "Command cannot be null");
             }

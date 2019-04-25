@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MobileBackend.DTO;
+using MobileBackend.Handlers;
 using MobileBackend.Models.Domain;
 using MobileBackend.Repositories;
 using System;
@@ -13,11 +14,15 @@ namespace MobileBackend.Services
     {
         private readonly IUserRepository userRepository;
         private readonly IMapper mapper;
+        private readonly IEncrypter encrypter;
+        private readonly IJwtHandler jwtHandler;
 
-        public UserService(IUserRepository userRepository, IMapper mapper)
+        public UserService(IUserRepository userRepository, IMapper mapper, IEncrypter encrypter, IJwtHandler jwtHandler)
         {
             this.userRepository = userRepository;
             this.mapper = mapper;
+            this.encrypter = encrypter;
+            this.jwtHandler = jwtHandler;
         }
 
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
@@ -28,7 +33,8 @@ namespace MobileBackend.Services
 
         public async Task<UserDto> GetUserAsync(string email)
         {
-            var user = await userRepository.GetUserAsync(email.Trim().ToLower());
+            email = email.Trim().ToLower();
+            var user = await userRepository.GetUserAsync(email);
 
             return mapper.Map<User, UserDto>(user);
         }
@@ -41,14 +47,40 @@ namespace MobileBackend.Services
 
         public async Task RegisterAsync(string email, string username, string password)
         {
+            email = email.Trim().ToLower();
             var user = await userRepository.GetUserAsync(email);
             if(user != null)
             {
                 throw new Exception($"User {email} already exists");
             }
 
-            user = new User(email, username, password);
+            var salt = encrypter.GetSalt(password);
+            var hash = encrypter.GetHash(password, salt);
+            user = new User(email, username, hash, salt);
             await userRepository.AddAsync(user);
+        }
+
+        public async Task<JwtDto> LoginAsync(string email, string password)
+        {
+            email = email.Trim().ToLower();
+            var user = await userRepository.GetUserAsync(email);
+
+            if(user == null)
+            {
+                throw new ArgumentNullException("Invalid email or password");
+            }
+
+            var salt = user.Salt;
+            var hash = encrypter.GetHash(password, salt);
+
+            if (user.Password.Equals(hash))
+            {
+                return jwtHandler.CreateToken(user.Email, user.Id, "user");
+            }
+            else
+            {
+                throw new Exception("Invalid email or password");
+            }
         }
     }
 }

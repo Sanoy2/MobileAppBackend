@@ -14,6 +14,7 @@ namespace MobileBackend.Mappers
             new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<User, UserDto>();
+                cfg.CreateMap<Recipe, RecipeDto>();
             }).CreateMapper();
     }
 }

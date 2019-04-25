@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MobileBackend.Ioc.Modules
 {
-    public class SettingsModule :Autofac.Module
+    public class SettingsModule : Autofac.Module
     {
         private readonly IConfiguration configuration;
 
@@ -22,6 +22,8 @@ namespace MobileBackend.Ioc.Modules
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterInstance(configuration.GetSettings<GeneralSettings>())
+                .SingleInstance();
+            builder.RegisterInstance(configuration.GetSettings<JwtSettings>())
                 .SingleInstance();
         }
     }

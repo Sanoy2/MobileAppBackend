@@ -11,12 +11,12 @@ namespace MobileBackend.Repositories
     {
         private static ISet<User> users = new HashSet<User>()
         {
-            new User("sanoy@email.com", "sanoy", "pass"),
-            new User("master@email.com", "mAsTeR", "pass"),
-            new User("jody3@email.com", "jodoeo", "pass"),
-            new User("gengu@email.com", "kingoscope", "pass"),
-            new User("hopyhops@email.com", "ChefOfTheYear", "pass"),
-            new User("johny_b@email.com", "tomatoSoupWinner", "pass")
+            new User(1, "sanoy@email.com", "sanoy", "pass", "salt"),
+            new User(2, "master@email.com", "mAsTeR", "pass", "salt"),
+            new User(3, "jody3@email.com", "jodoeo", "pass", "salt"),
+            new User(4, "gengu@email.com", "kingoscope", "pass", "salt"),
+            new User(5, "hopyhops@email.com", "ChefOfTheYear", "pass", "salt"),
+            new User(6, "johny_b@email.com", "tomatoSoupWinner", "pass", "salt")
         };
 
         public async Task AddAsync(User newUser)
