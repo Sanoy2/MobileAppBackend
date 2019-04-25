@@ -28,8 +28,9 @@ namespace MobileBackend.Controllers
         [HttpGet("{filename}")]
         public async Task<IActionResult> GetSomeImage(string filename)
         {
-            var image = imageService.GetFile(filename);
-            return File(image, "image/jpeg");
+            var path = env.WebRootFileProvider.GetFileInfo($"images/{filename}.jpeg")?.PhysicalPath;
+            var b = await System.IO.File.ReadAllBytesAsync(path);
+            return File(b, "image/jpeg");
         }
     }
-}
+}   
