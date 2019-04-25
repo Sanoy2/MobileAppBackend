@@ -1,7 +1,14 @@
+using System.IO;
+using System.Threading.Tasks;
+using MobileBackend.Services;
+
 namespace MobileBackend.Repositories
 {
-    public interface IImagesRepository
+    public interface IImagesRepository : IService
     {
-         string Add();
+        FileStream GetFile(string filename);
+        string SaveFile(FileStream file);
+
+        // Task<byte[]> GetFileBytesAsync(string filename);
     }
 }

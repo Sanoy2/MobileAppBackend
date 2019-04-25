@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using MobileBackend.Commands;
+using MobileBackend.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,20 +12,23 @@ namespace MobileBackend.Controllers
 {
     public class ImagesController : ApiControllerBase
     {
-        private readonly string basePath; // only for testing 
+        private readonly IImageService imageService;
+        private readonly IHostingEnvironment env;
 
         public ImagesController(
-            ICommandDispatcher commandDispatcher)  
+            IImageService imageService,
+            ICommandDispatcher commandDispatcher,
+            IHostingEnvironment hostingEnvironment)  
             : base(commandDispatcher)
         {
-            basePath = $"{Directory.GetCurrentDirectory()}{@"/wwwroot/"}";
+            this.imageService = imageService;
+            this.env = hostingEnvironment;
         }
 
         [HttpGet("{filename}")]
         public async Task<IActionResult> GetSomeImage(string filename)
         {
-            string path = basePath + filename + ".jpeg";
-            var image = System.IO.File.OpenRead(path);
+            var image = imageService.GetFile(filename);
             return File(image, "image/jpeg");
         }
     }
