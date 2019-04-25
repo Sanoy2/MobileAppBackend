@@ -10,9 +10,10 @@ namespace MobileBackend.DTO
         public int Id { get; set; }
         public int AuthorId { get; set; }
         public string Name { get; set; }
-        public string ShortDescription { get; protected set; }
-        public string Description { get; protected set; }
-        public short NeededTimeMinutes { get; protected set; }
+        public string ShortDescription { get; set; }
+        public string Description { get; set; }
+        public short NeededTimeMinutes { get; set; }
         public DateTime DateOfLastModification { get; set; }
+        public string MainImageUrl { get; set; }
     }
 }

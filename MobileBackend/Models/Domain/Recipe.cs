@@ -19,16 +19,18 @@ namespace MobileBackend.Models.Domain
         [Required]
         public short NeededTimeMinutes { get; protected set; }
         public DateTime DateOfLastModification { get; protected set; }
+        public string MainImageUrl {get; protected set; }
 
         protected Recipe() { }
 
-        public Recipe(int authorId, string name, string shortDescription, string description, short neededTimeMinutes)
+        public Recipe(int authorId, string name, string shortDescription, string description, short neededTimeMinutes, string mainImageUrl = "")
         {
             AuthorId = authorId;
             Name = name ?? throw new ArgumentNullException(nameof(name));
             ShortDescription = shortDescription ?? throw new ArgumentNullException(nameof(shortDescription));
             Description = description ?? throw new ArgumentNullException(nameof(description));
             NeededTimeMinutes = neededTimeMinutes;
+            MainImageUrl = mainImageUrl;
         }
     }
 }
