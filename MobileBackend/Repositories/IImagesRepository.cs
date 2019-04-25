@@ -1,14 +1,13 @@
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using MobileBackend.Services;
 
 namespace MobileBackend.Repositories
 {
     public interface IImagesRepository : IService
     {
-        FileStream GetFile(string filename);
-        string SaveFile(FileStream file);
-
-        // Task<byte[]> GetFileBytesAsync(string filename);
+        Task<byte[]> GetFileAsBytesAsync(string filename);
+        Task<string> SaveFileAsync(IFormFile file);
     }
 }

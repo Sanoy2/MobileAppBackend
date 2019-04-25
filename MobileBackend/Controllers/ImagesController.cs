@@ -31,35 +31,24 @@ namespace MobileBackend.Controllers
         [HttpGet("{filename}")]
         public async Task<IActionResult> GetSomeImage(string filename)
         {
-            var path = env.WebRootFileProvider.GetFileInfo($"images/{filename}.jpeg")?.PhysicalPath;
-            var b = await System.IO.File.ReadAllBytesAsync(path);
-            return File(b, "image/jpeg");
+            var bytes = await imageService.GetFileAsBytesAsync(filename);
+            return File(bytes, "image/jpeg");
         }
 
         [HttpPost]
         public async Task<IActionResult> Upload(IFormFile file)
         {
-            var uploads = Path.Combine(env.WebRootPath, "images");
-            var imageGuid = Guid.NewGuid().ToString() + ".jpeg";
-            var fullPath = Path.Combine(uploads, imageGuid);
-            if(file == null)
+            try
             {
-                return Content("null");
+                var imageId = await imageService.SaveFileAsync(file);
+                return Created($"api/images/{imageId}", new object());
             }
-            if(file.Length > 0)
+            catch(Exception ex)
             {
-                var builder = new StringBuilder();
-                builder.AppendLine($"name: {file.Name}");
-                builder.AppendLine($"filename: {file.FileName}");
-                builder.AppendLine($"content type: {file.ContentType}");
-                builder.AppendLine($"length: {file.Length}");
-                await file.CopyToAsync(new FileStream(fullPath, FileMode.Create));
+                if(env.IsDevelopment())
+                    throw;
 
-                return Content(builder.ToString());
-            }
-            else
-            {
-                return Content("file.Length > 0 is false");
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
     }

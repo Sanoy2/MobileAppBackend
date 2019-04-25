@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using MobileBackend.DTO;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,7 @@ namespace MobileBackend.Services
 {
     public interface IImageService : IService
     {
-        FileStream GetFile(string filename);
-        string SaveFile(FileStream file);
-
-        // Task<FileStream> GetImageAsync(string filename);
+        Task<byte[]> GetFileAsBytesAsync(string filename);
+        Task<string> SaveFileAsync(IFormFile file);
     }
 }

@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using MobileBackend.DTO;
 using MobileBackend.Models.Domain;
 using MobileBackend.Repositories;
@@ -17,19 +19,19 @@ namespace MobileBackend.Services
             this.imageRepository = imageRepository;
         }
 
-        public FileStream GetFile(string filename)
+        public async Task<byte[]> GetFileAsBytesAsync(string filename)
         {
-            return imageRepository.GetFile(filename);
+            return await imageRepository.GetFileAsBytesAsync(filename);
         }
 
-        // public async Task<FileStream> GetFileAsync(string filename)
-        // {
-        //     var bytes = await imageRepository.GetFileBytesAsync(filename);
-        // }
-
-        public string SaveFile(FileStream file)
+        public async Task<string> SaveFileAsync(IFormFile file)
         {
-            return imageRepository.SaveFile(file);
+            if(file == null)
+            {
+                throw new ArgumentNullException("File cannot be null");
+            }
+
+            return await imageRepository.SaveFileAsync(file);
         }
     }
 }
