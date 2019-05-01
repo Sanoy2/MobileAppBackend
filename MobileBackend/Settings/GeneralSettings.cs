@@ -8,5 +8,6 @@ namespace MobileBackend.Settings
     public class GeneralSettings
     {
         public string Name { get; set; }
+        public string ImagesDirectory { get; set; }
     }
 }
