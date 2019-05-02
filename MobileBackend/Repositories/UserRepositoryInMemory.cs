@@ -16,7 +16,8 @@ namespace MobileBackend.Repositories
             new User(3, "jody3@email.com", "jodoeo", "pass", "salt"),
             new User(4, "gengu@email.com", "kingoscope", "pass", "salt"),
             new User(5, "hopyhops@email.com", "ChefOfTheYear", "pass", "salt"),
-            new User(6, "johny_b@email.com", "tomatoSoupWinner", "pass", "salt")
+            new User(6, "johny_b@email.com", "tomatoSoupWinner", "pass", "salt"),
+            new User(7, "example@email.com", "john", "BA21767AE494AFE5A2165DCB3338C5323E9907050E34542C405D575CC31BF527" ,"salt")
         };
 
         public async Task AddAsync(User newUser)
