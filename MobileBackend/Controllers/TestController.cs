@@ -13,7 +13,7 @@ namespace MobileBackend.Controllers
 
         [HttpGet]
         [Authorize]
-        [Route("auth")]
+        [Route("checkIfLogged")]
         public IActionResult OnAuth()
         {
             return Ok();
