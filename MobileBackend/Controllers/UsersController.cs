@@ -61,9 +61,16 @@ namespace MobileBackend.Controllers
         [Route("register")]
         public async Task<IActionResult> Register([FromBody]CreateUser command)
         { 
-            await commandDispatcher.DispatchAsync(command);
+            try
+            {
+                await commandDispatcher.DispatchAsync(command);
 
-            return Created($"api/users/{command.Email}", new object());
+                return StatusCode((int)HttpStatusCode.Created, "Account created");
+            }
+            catch(Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.Unauthorized, e.Message);
+            }
         }
 
         [HttpPost]
