@@ -34,6 +34,19 @@ namespace MobileBackend.Repositories
             return await Task.FromResult(recipes.ToList());
         }
 
+        public async Task<IEnumerable<Recipe>> GetAllPublicAsync()
+        {
+            return await Task.FromResult(recipes.Where(n => n.IsPrivate == false).ToList());
+        }
+
+        public async Task<IEnumerable<Recipe>> GetAllAvailableForUserAsync(int userId)
+        {
+            var usersRecipes = await GetUsersRecipesAsync(userId);
+            var allPublicRecipes = await GetAllPublicAsync();
+
+            return usersRecipes.Union(allPublicRecipes);
+        }
+
         public async Task<IEnumerable<Recipe>> GetUsersRecipesAsync(int userId)
         {
             return await Task.FromResult(recipes.Where(n => n.AuthorId == userId).ToList());

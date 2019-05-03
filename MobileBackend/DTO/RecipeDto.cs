@@ -15,5 +15,6 @@ namespace MobileBackend.DTO
         public short NeededTimeMinutes { get; set; }
         public DateTime DateOfLastModification { get; set; }
         public string MainImageUrl { get; set; }
+        public bool IsPrivate { get; set; }
     }
 }

@@ -20,10 +20,11 @@ namespace MobileBackend.Models.Domain
         public short NeededTimeMinutes { get; protected set; }
         public DateTime DateOfLastModification { get; protected set; }
         public string MainImageUrl {get; protected set; }
+        public bool IsPrivate { get; set; }
 
         protected Recipe() { }
 
-        public Recipe(int authorId, string name, string shortDescription, string description, short neededTimeMinutes, string mainImageUrl = "")
+        public Recipe(int authorId, string name, string shortDescription, string description, short neededTimeMinutes, bool isPrivate = false, string mainImageUrl = "")
         {
             AuthorId = authorId;
             Name = name ?? throw new ArgumentNullException(nameof(name));
@@ -31,6 +32,7 @@ namespace MobileBackend.Models.Domain
             Description = description ?? throw new ArgumentNullException(nameof(description));
             NeededTimeMinutes = neededTimeMinutes;
             MainImageUrl = mainImageUrl;
+            IsPrivate = isPrivate;
         }
     }
 }
