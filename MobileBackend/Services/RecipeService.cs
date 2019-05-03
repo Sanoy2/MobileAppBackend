@@ -19,9 +19,15 @@ namespace MobileBackend.Services
             this.mapper = mapper;
         }
 
-        public async Task AddAsync(int authorId, string name, string shortDescription, string description, short neededTimeMinutes)
+        public async Task<IEnumerable<RecipeDto>> GetAllAvailableForUserAsync(int userId)
         {
-            var recipe = new Recipe(authorId, name, shortDescription, description, neededTimeMinutes);
+            var recipes = await recipeRepository.GetAllAvailableForUserAsync(userId);
+            return recipes.Select(n => mapper.Map<Recipe, RecipeDto>(n)).ToList();
+        }
+
+        public async Task AddAsync(int authorId, string name, string shortDescription, string description, short neededTimeMinutes, bool isPrivate = false, string imageUrl = null)
+        {
+            var recipe = new Recipe(authorId, name, shortDescription, description, neededTimeMinutes, isPrivate, imageUrl);
             await recipeRepository.AddAsync(recipe);
         }
 
