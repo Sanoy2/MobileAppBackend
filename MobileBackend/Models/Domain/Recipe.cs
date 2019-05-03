@@ -28,11 +28,12 @@ namespace MobileBackend.Models.Domain
         {
             AuthorId = authorId;
             Name = name ?? throw new ArgumentNullException(nameof(name));
-            ShortDescription = shortDescription ?? throw new ArgumentNullException(nameof(shortDescription));
-            Description = description ?? throw new ArgumentNullException(nameof(description));
+            ShortDescription = shortDescription;
+            Description = description;
             NeededTimeMinutes = neededTimeMinutes;
             MainImageUrl = mainImageUrl;
             IsPrivate = isPrivate;
+            DateOfLastModification = DateTime.UtcNow;
         }
     }
 }
