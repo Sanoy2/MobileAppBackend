@@ -3,15 +3,36 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MobileBackend.Commands;
+using MobileBackend.Commands.Users;
+using MobileBackend.Extensions;
+using MobileBackend.Handlers;
+using MobileBackend.Models.Enums;
+using MobileBackend.Services;
+using MobileBackend.Settings;
 
 namespace MobileBackend.Controllers
 {
-    public class RecipesController : ControllerBase
+    public class RecipesController : ApiControllerBase
     {
-        [HttpGet]
-        public IActionResult GetRecipes(string keyword = null, int page = 1, int perPage = 20)
+        private readonly IRecipeService recipeService;
+        private readonly IJwtHandler jwtHandler;
+
+        public RecipesController(
+            ICommandDispatcher commandDispatcher,
+            IJwtHandler jwtHandler,
+            IRecipeService recipeService)   
+            : base(commandDispatcher)
         {
-            return Ok();
+            this.jwtHandler = jwtHandler;
+            this.recipeService = recipeService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetRecipes()
+        {
+            var recipes = await recipeService.GetRecipesAsync();
+            return Ok(recipes);
         }
     }
 }
