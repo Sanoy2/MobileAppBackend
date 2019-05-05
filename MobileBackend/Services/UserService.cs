@@ -67,7 +67,7 @@ namespace MobileBackend.Services
 
             if(user == null)
             {
-                throw new ArgumentNullException("Invalid email or password");
+                throw new Exception("Invalid email or password");
             }
 
             var salt = user.Salt;
