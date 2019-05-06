@@ -14,5 +14,6 @@ namespace MobileBackend.Services
         Task RegisterAsync(string email, string username, string password);
 
         Task<JwtDto> LoginAsync(string email, string password);
+        Task<AlternateJwtDto> LoginAsyncAlternate(string email, string password);
     }
 }

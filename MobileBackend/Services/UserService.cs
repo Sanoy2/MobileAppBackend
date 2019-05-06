@@ -82,5 +82,36 @@ namespace MobileBackend.Services
                 throw new Exception("Invalid email or password");
             }
         }
+
+        public async Task<AlternateJwtDto> LoginAsyncAlternate(string email, string password)
+        {
+            email = email.Trim().ToLower();
+            var user = await userRepository.GetUserAsync(email);
+
+            if(user == null)
+            {
+                throw new Exception("Invalid email or password");
+            }
+
+            var salt = user.Salt;
+            var hash = encrypter.GetHash(password, salt);
+
+            if (user.Password.Equals(hash))
+            {
+                var jwtToken = jwtHandler.CreateToken(user.Email, user.Id, "user");
+                var alternateToken = new AlternateJwtDto()
+                {
+                    Token = jwtToken.Token,
+                    Email = email,
+                    Username = user.Username
+                };
+
+                return alternateToken;
+            }
+            else
+            {
+                throw new Exception("Invalid email or password");
+            }
+        }
     }
 }

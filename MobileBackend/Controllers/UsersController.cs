@@ -81,7 +81,8 @@ namespace MobileBackend.Controllers
 
             try
             {
-                var token = await userService.LoginAsync(command.Email, command.Password);
+                // var token = await userService.LoginAsync(command.Email, command.Password);
+                var token = await userService.LoginAsyncAlternate(command.Email, command.Password);
                 return Ok(token);
             }
             catch (Exception e)
