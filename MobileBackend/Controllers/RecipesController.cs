@@ -15,6 +15,7 @@ using MobileBackend.Handlers;
 using MobileBackend.Models.Enums;
 using MobileBackend.Services;
 using MobileBackend.Settings;
+using MobileBackend.Commands.Recipes;
 
 namespace MobileBackend.Controllers
 {
@@ -42,7 +43,7 @@ namespace MobileBackend.Controllers
             System.Console.WriteLine("I'm done");
             return Ok(recipes);
         }
-
+ 
         [HttpGet]
         [Authorize]
         [Route("loggeduser")]
@@ -61,6 +62,47 @@ namespace MobileBackend.Controllers
             {
                 System.Console.WriteLine("Cant parse user id");
                 return StatusCode((int)HttpStatusCode.BadRequest, "Something is wrong with user id");
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> CreateRecipe([FromBody] CreateRecipe command)
+        {
+            System.Console.WriteLine(DateTime.Now);
+            System.Console.WriteLine("Creating new recipe");
+            if(command == null)
+            {
+                System.Console.WriteLine("I GOT NULL");
+                return StatusCode((int)HttpStatusCode.BadRequest, "Something is wrong with your data :(");
+            }
+            System.Console.WriteLine(command.ToString());
+            int userId;
+            if(Int32.TryParse(HttpContext.GetJwtPayload(JwtEnums.userId), out userId))
+            {
+                try
+                {
+                    await recipeService.AddAsync(
+                        userId, 
+                        command.Name, 
+                        command.ShortDescription, 
+                        command.Description, 
+                        command.NeededTimeMinutes, 
+                        command.IsPrivate, 
+                        command.MainImageUrl);
+                    System.Console.WriteLine("I'm done");
+                    return Ok();
+                }
+                catch(Exception e)
+                {
+                    System.Console.WriteLine(e.Message);
+                    return StatusCode((int)HttpStatusCode.BadRequest, "Something is your data :(");
+                }
+            }
+            else
+            {
+                System.Console.WriteLine("Cant parse user id");
+                return StatusCode((int)HttpStatusCode.BadRequest, "Something is wrong with user id :(");
             }
         }
     }

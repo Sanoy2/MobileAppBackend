@@ -16,10 +16,10 @@ namespace MobileBackend.Handlers.Recipes
         {
             this.recipeService = recipeService;
         }
+        // this method wont work
         public async Task HandleAsync(CreateRecipe command)
         {
-            await recipeService.AddAsync(command.AuthorId, command.Name, command.ShortDescription, 
-                                         command.Description, command.NeededTimeMinutes);
+            await Task.FromResult(0);
         }
     }
 }
