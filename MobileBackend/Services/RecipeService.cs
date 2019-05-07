@@ -25,7 +25,7 @@ namespace MobileBackend.Services
             return recipes.Select(n => mapper.Map<Recipe, RecipeDto>(n)).ToList();
         }
 
-        public async Task<IEnumerable<RecipeDTO>> GetAllPublicRecipes()
+        public async Task<IEnumerable<RecipeDto>> GetAllPublicRecipes()
         {
             var recipes = await recipeRepository.GetAllPublicAsync();
             return recipes.Select(n => mapper.Map<Recipe, RecipeDto>(n)).ToList();
