@@ -36,7 +36,10 @@ namespace MobileBackend.Controllers
         [HttpGet]
         public async Task<IActionResult> GetRecipes()
         {
+            System.Console.WriteLine(DateTime.Now);
+            System.Console.WriteLine("Calling when user not logged");
             var recipes = await recipeService.GetRecipesAsync();
+            System.Console.WriteLine("I'm done");
             return Ok(recipes);
         }
 
@@ -45,14 +48,18 @@ namespace MobileBackend.Controllers
         [Route("loggeduser")]
         public async Task<IActionResult> GetRecipesWithUserId()
         {
+            System.Console.WriteLine(DateTime.Now);
+            System.Console.WriteLine("Calling when user logged in");
             int userId;
             if(Int32.TryParse(HttpContext.GetJwtPayload(JwtEnums.userId), out userId))
             {
                 var recipes = await recipeService.GetAllAvailableForUserAsync(userId);
+                System.Console.WriteLine("I'm done");
                 return Ok(recipes);
             }
             else
             {
+                System.Console.WriteLine("Cant parse user id");
                 return StatusCode((int)HttpStatusCode.BadRequest, "Something is wrong with user id");
             }
         }
