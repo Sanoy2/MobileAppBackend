@@ -39,7 +39,7 @@ namespace MobileBackend.Controllers
         {
             System.Console.WriteLine(DateTime.Now);
             System.Console.WriteLine("Calling when user not logged");
-            var recipes = await recipeService.GetRecipesAsync();
+            var recipes = await recipeService.GetAllPublicRecipes();
             System.Console.WriteLine("I'm done");
             return Ok(recipes);
         }
@@ -55,6 +55,27 @@ namespace MobileBackend.Controllers
             if(Int32.TryParse(HttpContext.GetJwtPayload(JwtEnums.userId), out userId))
             {
                 var recipes = await recipeService.GetAllAvailableForUserAsync(userId);
+                System.Console.WriteLine("I'm done");
+                return Ok(recipes);
+            }
+            else
+            {
+                System.Console.WriteLine("Cant parse user id");
+                return StatusCode((int)HttpStatusCode.BadRequest, "Something is wrong with user id");
+            }
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("my")]
+        public async Task<IActionResult> GetUsersRecipes()
+        {
+            System.Console.WriteLine(DateTime.Now);
+            System.Console.WriteLine("Calling when user logged in");
+            int userId;
+            if(Int32.TryParse(HttpContext.GetJwtPayload(JwtEnums.userId), out userId))
+            {
+                var recipes = await recipeService.GetRecipesAsync(userId);
                 System.Console.WriteLine("I'm done");
                 return Ok(recipes);
             }
