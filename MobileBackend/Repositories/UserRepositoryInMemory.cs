@@ -30,6 +30,11 @@ namespace MobileBackend.Repositories
             return await Task.FromResult(users.OrderByDescending(n => n.DateOfJoin).ToList());
         }
 
+        public int GetMaxId()
+        {
+            return users.Max(n => n.Id);
+        }
+
         public async Task<User> GetUserAsync(int userId)
         {
             return await Task.FromResult(users.SingleOrDefault(n => n.Id == userId));

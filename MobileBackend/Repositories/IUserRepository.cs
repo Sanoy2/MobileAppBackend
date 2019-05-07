@@ -19,5 +19,7 @@ namespace MobileBackend.Repositories
         Task UpdateAsync(User user);
 
         Task RemoveAsync(int userId);
+
+        int GetMaxId();
     }
 }
