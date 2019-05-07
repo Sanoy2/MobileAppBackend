@@ -56,7 +56,8 @@ namespace MobileBackend.Services
 
             var salt = encrypter.GetSalt(password);
             var hash = encrypter.GetHash(password, salt);
-            user = new User(email, username, hash, salt);
+            var newId = userRepository.GetMaxId() + 1;
+            user = new User(newId, email, username, hash, salt);
             await userRepository.AddAsync(user);
         }
 
