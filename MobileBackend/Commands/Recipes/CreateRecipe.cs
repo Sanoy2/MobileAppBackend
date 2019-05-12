@@ -8,7 +8,7 @@ namespace MobileBackend.Commands.Recipes
         public string ShortDescription { get; set; }
         public string Description { get; set; }
         public short NeededTimeMinutes { get; set; }
-        public string MainImageUrl {get; protected set; }
+        public string MainImageUrl {get; set; }
         public bool IsPrivate { get; set; }
 
         public override string ToString()
