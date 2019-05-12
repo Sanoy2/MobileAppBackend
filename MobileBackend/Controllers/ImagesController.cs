@@ -41,7 +41,7 @@ namespace MobileBackend.Controllers
             try
             {
                 var imageId = await imageService.SaveFileAsync(file);
-                return Created($"api/images/{imageId}", new object());
+                return Ok(imageId);
             }
             catch(Exception ex)
             {
